@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
 
@@ -27,6 +28,11 @@ public class MessengerGUI
         clientType.setValue("Client");
 
         IOManager.setDisplayProcess(m -> Platform.runLater(() -> messageList.getItems().add(m)));
+        messageInput.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                sendButton.fire();
+            }
+        });
     }
 
     public void connect()

@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +37,8 @@ public class Server
 
     public void sendMessage(String message)
     {
-        ServerSideClient.sendAll(message);
+        ServerSideClient.sendAll("[Server] " + message);
+        IOManager.displayMessage(message);
     }
 
     private static class ServerSideClient implements Runnable
