@@ -3,27 +3,31 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MessengerGUI">
+<BorderPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MessengerGUI">
 
     <padding>
         <Insets topRightBottomLeft="4.0" />
     </padding>
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="5.0">
+        <HBox alignment="CENTER_LEFT" spacing="8.0">
             <padding>
                 <Insets topRightBottomLeft="10.0" />
             </padding>
 
-            <Label text="Name: " />
-            <TextField fx:id="nameInput" promptText="Username" />
-
+            <Label text="Socket Messenger">
+            <font>
+               <Font name="System Bold" size="15.0" />
+            </font></Label>
+            <Separator orientation="VERTICAL" />
+            <Label text="Name: "/>
+            <TextField fx:id="nameInput" promptText="Username"  HBox.hgrow="ALWAYS"/>
             <Separator orientation="VERTICAL" />
 
             <TextField fx:id="ipInput" promptText="IP" />
             <TextField fx:id="portInput" maxWidth="80.0" promptText="Port" />
             <ChoiceBox fx:id="clientType" />
-
             <Separator orientation="VERTICAL" />
 
             <Button fx:id="connectButton" onAction="#connect" text="Connect" />
@@ -41,7 +45,7 @@
     </center>
 
     <bottom>
-        <HBox alignment="CENTER_LEFT" spacing="5.0">
+        <HBox alignment="CENTER_LEFT" spacing="8.0">
             <padding>
                 <Insets topRightBottomLeft="10.0" />
             </padding>
