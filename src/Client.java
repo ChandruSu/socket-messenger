@@ -5,8 +5,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
-public class Client implements Runnable
+public class Client
 {
     private final Socket socket;
 
@@ -14,7 +15,7 @@ public class Client implements Runnable
     private final PrintWriter output;
 
     private final String name;
-    private boolean running;
+    private volatile boolean running;
 
     public Client(String name, String ip, int port) throws IOException
     {
@@ -27,12 +28,12 @@ public class Client implements Runnable
         // creates input and output streams
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.output = new PrintWriter(socket.getOutputStream(), true);
+        this.running = true;
+        new Thread(this::readLoop).start();
     }
 
-    @Override
-    public void run()
+    public void readLoop()
     {
-        running = true;
         output.printf("User %s has joined server!\n", socket.getLocalAddress());
 
         try {
@@ -40,18 +41,31 @@ public class Client implements Runnable
 
             do {
                 message = input.readLine();
-                System.out.println(message);
-            } while (!socket.isClosed() && !message.equals("exit"));
+                IOManager.displayMessage(message);
+            } while (!socket.isClosed() && running);
         } catch (IOException e) {
-            System.err.println("Failed to read message!");
+            IOManager.displayMessage("Failed to read message!");
         } finally {
             // closes client socket
             try {
                 socket.close();
             } catch (IOException e) {
-                System.err.println("Failed to close socket!");
+                IOManager.displayMessage("Failed to close socket!");
             }
             running = false;
+        }
+    }
+
+    public void writeLoop(Scanner userInput)
+    {
+        while (isRunning()) {
+            String message = userInput.nextLine();
+
+            if (message.equals("exit")) {
+                running = false;
+            } else {
+                sendMessage(message);
+            }
         }
     }
 

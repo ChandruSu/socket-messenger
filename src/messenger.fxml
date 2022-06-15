@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MessengerGUI">
+
+    <padding>
+        <Insets topRightBottomLeft="4.0" />
+    </padding>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <padding>
+                <Insets topRightBottomLeft="10.0" />
+            </padding>
+
+            <Label text="Name: " />
+            <TextField fx:id="nameInput" promptText="Username" />
+
+            <Separator orientation="VERTICAL" />
+
+            <TextField fx:id="ipInput" promptText="IP" />
+            <TextField fx:id="portInput" maxWidth="80.0" promptText="Port" />
+            <ChoiceBox fx:id="clientType" />
+
+            <Separator orientation="VERTICAL" />
+
+            <Button fx:id="connectButton" onAction="#connect" text="Connect" />
+        </HBox>
+    </top>
+
+    <!--Central pane is reserved for displaying messages.-->
+    <center>
+        <StackPane>
+            <padding>
+                <Insets topRightBottomLeft="10.0" />
+            </padding>
+            <ListView fx:id="messageList" />
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="5.0">
+            <padding>
+                <Insets topRightBottomLeft="10.0" />
+            </padding>
+            <TextField fx:id="messageInput" promptText="Message" HBox.hgrow="ALWAYS" />
+            <Button fx:id="sendButton" disable="true" text="Send" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

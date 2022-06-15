@@ -1,3 +1,5 @@
+import javafx.application.Platform;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,6 +25,7 @@ public class Server
         ExecutorService pool = Executors.newFixedThreadPool(20);
 
         new Thread(() -> {
+            IOManager.displayMessage("Waiting for connections!");
             while (!socket.isClosed()) {
                 try {
                     pool.execute(new ServerSideClient(socket.accept()));
@@ -31,6 +34,11 @@ public class Server
                 }
             }
         }).start();
+    }
+
+    public void sendMessage(String message)
+    {
+        ServerSideClient.sendAll(message);
     }
 
     private static class ServerSideClient implements Runnable
@@ -56,20 +64,24 @@ public class Server
                 String message;
                 do {
                     message = input.readLine();
-                    System.out.println(message);
-                    for (ServerSideClient client : clients) {
-                        client.output.println(message);
-                    }
+                    sendAll(message);
+                    IOManager.displayMessage(message);
                 } while (!socket.isClosed() && !message.equals("exit"));
             } catch (IOException e) {
-                e.printStackTrace();
+                IOManager.displayMessage("Failed to read message from client!");
             } finally {
                 try {
                     socket.close();
                     clients.remove(this);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    IOManager.displayMessage("Failed to close client socket!");
                 }
+            }
+        }
+
+        public static void sendAll(String message) {
+            for (ServerSideClient client : clients) {
+                client.output.println(message);
             }
         }
     }
